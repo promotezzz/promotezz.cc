@@ -36,7 +36,51 @@
     }
 
     /* ==========================================================================
-       PRIMARY 4-PANEL QUADRANT GRID (25% OF SCREEN EACH)
+       SCENE 1: CLEAN ALL-WHITE HOME PAGE (CENTERED TITLE)
+       ========================================================================== */
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      transform-origin: center center;
+      will-change: transform, opacity;
+      transition: transform 0.48s var(--spring-ease), opacity 0.35s ease;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #000000;
+      font-family: var(--font-system);
+      cursor: pointer;
+      will-change: transform, opacity;
+      transform-origin: center center;
+      transition: transform 0.48s var(--spring-ease), opacity 0.25s ease;
+    }
+
+    .hero-title:hover {
+      opacity: 0.65;
+    }
+
+    /* Zoom out of Home page when moving to Scene 2 */
+    body.is-zoomed .hero-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(2.4);
+    }
+
+    body.is-zoomed .hero-title {
+      transform: scale(3.8);
+      opacity: 0;
+    }
+
+    /* ==========================================================================
+       SCENE 2: PRIMARY 4-PANEL QUADRANT GRID (25% OF SCREEN EACH)
        ========================================================================== */
     .quadrant-grid {
       position: fixed;
@@ -49,14 +93,22 @@
       background-color: #ffffff;
       font-family: var(--font-panel);
       transform-origin: center center;
-      transform: scale(1);
-      opacity: 1;
+      transform: scale(0.94);
+      opacity: 0;
       filter: blur(0px);
+      pointer-events: none;
       will-change: transform, opacity, filter;
       transition: transform 0.52s var(--spring-ease), 
                   opacity 0.42s ease, 
                   filter 0.42s ease;
       z-index: 10;
+    }
+
+    /* Active State (Zoomed in from Home) */
+    body.is-zoomed .quadrant-grid {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* Cinematic Parting Zoom when opening About */
@@ -178,8 +230,15 @@
       left: 50%;
       transform: translate(-50%, -50%) scale(1);
       z-index: 30;
+      opacity: 0;
+      pointer-events: none;
       will-change: transform, opacity;
-      transition: opacity 0.35s ease, transform 0.48s var(--spring-ease);
+      transition: opacity 0.3s ease, transform 0.48s var(--spring-ease);
+    }
+
+    body.is-zoomed .crossroads-hub {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     body.is-about-active .crossroads-hub {
@@ -222,7 +281,7 @@
     }
 
     /* ==========================================================================
-       ABOUT US / INFORMATION PAGE (GLIDE & BLOOM TRANSITION)
+       SCENE 3: ABOUT US / INFORMATION PAGE (GLIDE & BLOOM TRANSITION)
        ========================================================================== */
     .about-page {
       position: fixed;
@@ -258,7 +317,7 @@
       flex-direction: column;
     }
 
-    /* Staggered Entrance Animations for High-Polish Feel */
+    /* Staggered Entrance Animations */
     body.is-about-active .about-hero {
       animation: smoothFloatIn 0.55s var(--spring-ease) 0.08s both;
     }
@@ -314,7 +373,7 @@
       margin-bottom: 36px;
     }
 
-    /* Sleek Bottom Return Bar */
+    /* Bottom Return Bar */
     .about-close-bar {
       display: flex;
       align-items: center;
@@ -402,7 +461,12 @@
 </head>
 <body>
 
-  <!-- ==================== 4-PANEL QUADRANT (PRIMARY SCREEN, 25% EACH) ==================== -->
+  <!-- ==================== SCENE 1: CLEAN WHITE HOME PAGE ==================== -->
+  <div id="hero-overlay" class="hero-overlay">
+    <h1 id="hero-title" class="hero-title">promotezz.cc</h1>
+  </div>
+
+  <!-- ==================== SCENE 2: 4-PANEL QUADRANT (25% EACH) ==================== -->
   <main id="quadrant-grid" class="quadrant-grid">
 
     <!-- PANEL 1: STARDEBLOATER (Top Left) -->
@@ -483,7 +547,7 @@
 
   </main>
 
-  <!-- ==================== ABOUT US PAGE (ACCESSIBLE VIA CENTER BUTTON) ==================== -->
+  <!-- ==================== SCENE 3: ABOUT US PAGE ==================== -->
   <section id="about-page" class="about-page">
     <div class="about-inner">
 
@@ -517,29 +581,47 @@
   </section>
 
   <script>
+    const heroTitle = document.getElementById('hero-title');
     const hubTriggerBtn = document.getElementById('hub-trigger-btn');
     const aboutPage = document.getElementById('about-page');
     const closeAboutBtn = document.getElementById('close-about-btn');
 
-    // Zoom into About Page
+    // 1. Zoom from Home Page into 4-Quadrant Grid
+    function zoomToQuadrants() {
+      document.body.classList.add('is-zoomed');
+    }
+
+    // 2. Zoom from 4 Quadrants into About Page
     function zoomToAbout() {
       document.body.classList.add('is-about-active');
     }
 
-    // Return to 4 Quadrants
+    // 3. Return from About Page to 4 Quadrants
     function returnToQuadrants() {
       document.body.classList.remove('is-about-active');
     }
 
+    // 4. Return from 4 Quadrants to Home Page
+    function returnToHome() {
+      document.body.classList.remove('is-zoomed', 'is-about-active');
+    }
+
+    heroTitle.addEventListener('click', zoomToQuadrants);
     hubTriggerBtn.addEventListener('click', zoomToAbout);
     if (closeAboutBtn) {
       closeAboutBtn.addEventListener('click', returnToQuadrants);
     }
 
-    // Clicking outside about content or pressing ESC returns to quadrants
+    // ESC Key Navigation:
+    // If in About Page -> return to Quadrants
+    // If in Quadrants -> return to Home Page
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && document.body.classList.contains('is-about-active')) {
-        returnToQuadrants();
+      if (e.key === 'Escape') {
+        if (document.body.classList.contains('is-about-active')) {
+          returnToQuadrants();
+        } else if (document.body.classList.contains('is-zoomed')) {
+          returnToHome();
+        }
       }
     });
 
