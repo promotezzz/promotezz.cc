@@ -6,7 +6,7 @@
   <title>promotezz.cc</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -18,6 +18,7 @@
       --bg-white: #ffffff;
       --text-main: #09090b;
       --text-muted: #71717a;
+      --text-faint: #a1a1aa;
       --border-light: #e4e4e7;
       --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-panel: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -36,47 +37,195 @@
     }
 
     /* ==========================================================================
-       SCENE 1: CLEAN ALL-WHITE HOME PAGE (CENTERED TITLE)
+       SCENE 1: ELEVATED MINIMAL ALL-WHITE HOME PAGE
        ========================================================================== */
     .hero-overlay {
       position: fixed;
       inset: 0;
       background-color: #ffffff;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(24px, 4vw, 48px);
       z-index: 20;
       transform-origin: center center;
       will-change: transform, opacity;
-      transition: transform 0.48s var(--spring-ease), opacity 0.35s ease;
+      transition: transform 0.52s var(--spring-ease), opacity 0.38s ease;
+    }
+
+    /* Top Corner Bar */
+    .hero-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      transition: opacity 0.3s ease, transform 0.35s var(--spring-ease);
+    }
+
+    .hero-corner-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(0.85); opacity: 0.6; }
+      50% { transform: scale(1.25); opacity: 1; }
+    }
+
+    .hero-corner-right {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    /* Center Hero Unit */
+    .hero-center-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: auto 0;
+      cursor: pointer;
     }
 
     .hero-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-size: clamp(2.8rem, 6.5vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
       color: #000000;
-      font-family: var(--font-system);
-      cursor: pointer;
+      font-family: var(--font-panel);
       will-change: transform, opacity;
       transform-origin: center center;
-      transition: transform 0.48s var(--spring-ease), opacity 0.25s ease;
+      transition: transform 0.3s var(--spring-ease), opacity 0.25s ease;
+      line-height: 1;
+      margin-bottom: 14px;
     }
 
-    .hero-title:hover {
-      opacity: 0.65;
+    .hero-center-unit:hover .hero-title {
+      transform: scale(1.03);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 24px;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    .hero-enter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      padding: 9px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s var(--spring-ease);
+    }
+
+    .hero-center-unit:hover .hero-enter-pill {
+      background: #09090b;
+      color: #ffffff;
+      border-color: #09090b;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-enter-pill .kbd-hint {
+      background: #f4f4f5;
+      color: #71717a;
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e4e4e7;
+      transition: all 0.2s;
+    }
+
+    .hero-center-unit:hover .kbd-hint {
+      background: #27272a;
+      color: #ffffff;
+      border-color: #3f3f46;
+    }
+
+    /* Bottom Bar */
+    .hero-bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      transition: opacity 0.3s ease, transform 0.35s var(--spring-ease);
+    }
+
+    .hero-spec {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+    }
+
+    .hero-ext-link {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .hero-ext-link:hover {
+      text-decoration: underline;
     }
 
     /* Zoom out of Home page when moving to Scene 2 */
     body.is-zoomed .hero-overlay {
       opacity: 0;
       pointer-events: none;
-      transform: scale(2.4);
+      transform: scale(2.2);
     }
 
     body.is-zoomed .hero-title {
-      transform: scale(3.8);
+      transform: scale(3.5);
       opacity: 0;
+    }
+
+    body.is-zoomed .hero-topbar {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+
+    body.is-zoomed .hero-bottombar {
+      opacity: 0;
+      transform: translateY(16px);
     }
 
     /* ==========================================================================
@@ -424,6 +573,9 @@
 
     /* MOBILE RESPONSIVE */
     @media (max-width: 768px) {
+      .hero-overlay {
+        padding: 24px 20px;
+      }
       .quadrant-grid {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(4, 1fr);
@@ -461,9 +613,36 @@
 </head>
 <body>
 
-  <!-- ==================== SCENE 1: CLEAN WHITE HOME PAGE ==================== -->
+  <!-- ==================== SCENE 1: ELEVATED MINIMAL HOME PAGE ==================== -->
   <div id="hero-overlay" class="hero-overlay">
-    <h1 id="hero-title" class="hero-title">promotezz.cc</h1>
+    
+    <!-- Top Corner Bar -->
+    <header class="hero-topbar">
+      <div class="hero-corner-left">
+        <span class="pulse-dot"></span>
+        <span>Ecosystem // Online</span>
+      </div>
+      <div class="hero-corner-right">
+        <span>3 Nodes Live</span>
+      </div>
+    </header>
+
+    <!-- Center Hero Unit -->
+    <div class="hero-center-unit" id="hero-trigger">
+      <h1 id="hero-title" class="hero-title">promotezz.cc</h1>
+      <p class="hero-subtitle">Independent software collective, Windows decluttering &amp; mod organization</p>
+      <div class="hero-enter-pill">
+        <span>Click to enter</span>
+        <span class="kbd-hint">&crarr;</span>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <footer class="hero-bottombar">
+      <span class="hero-spec">STARDEBLOATER &bull; WIKI &bull; PACKED</span>
+      <a href="https://github.com/promotezzz" target="_blank" rel="noopener" class="hero-ext-link">github.com/promotezzz &rarr;</a>
+    </footer>
+
   </div>
 
   <!-- ==================== SCENE 2: 4-PANEL QUADRANT (25% EACH) ==================== -->
@@ -581,7 +760,7 @@
   </section>
 
   <script>
-    const heroTitle = document.getElementById('hero-title');
+    const heroTrigger = document.getElementById('hero-trigger');
     const hubTriggerBtn = document.getElementById('hub-trigger-btn');
     const aboutPage = document.getElementById('about-page');
     const closeAboutBtn = document.getElementById('close-about-btn');
@@ -606,16 +785,22 @@
       document.body.classList.remove('is-zoomed', 'is-about-active');
     }
 
-    heroTitle.addEventListener('click', zoomToQuadrants);
+    heroTrigger.addEventListener('click', zoomToQuadrants);
     hubTriggerBtn.addEventListener('click', zoomToAbout);
     if (closeAboutBtn) {
       closeAboutBtn.addEventListener('click', returnToQuadrants);
     }
 
-    // ESC Key Navigation:
-    // If in About Page -> return to Quadrants
-    // If in Quadrants -> return to Home Page
+    // Keyboard Shortcuts (Enter, Space, Esc)
     window.addEventListener('keydown', (e) => {
+      // Enter or Space on Home Page zooms into Quadrants
+      if ((e.key === 'Enter' || e.key === ' ') && !document.body.classList.contains('is-zoomed')) {
+        e.preventDefault();
+        zoomToQuadrants();
+        return;
+      }
+
+      // ESC Navigation Hierarchy
       if (e.key === 'Escape') {
         if (document.body.classList.contains('is-about-active')) {
           returnToQuadrants();
