@@ -6,7 +6,7 @@
   <title>promotezz.cc</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -36,50 +36,7 @@
     }
 
     /* ==========================================================================
-       SCENE 1: HERO OVERLAY (ALL WHITE HERO SCREEN)
-       ========================================================================== */
-    .hero-overlay {
-      position: fixed;
-      inset: 0;
-      background-color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-      transform-origin: center center;
-      will-change: transform, opacity;
-      transition: transform 0.38s var(--snap-curve), opacity 0.32s ease;
-    }
-
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #000000;
-      font-family: var(--font-system);
-      cursor: pointer;
-      will-change: transform, opacity;
-      transform-origin: center center;
-      transition: transform 0.38s var(--snap-curve), opacity 0.2s ease;
-    }
-
-    .hero-title:hover {
-      opacity: 0.65;
-    }
-
-    body.is-zoomed .hero-overlay {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(2.4);
-    }
-
-    body.is-zoomed .hero-title {
-      transform: scale(3.8);
-      opacity: 0;
-    }
-
-    /* ==========================================================================
-       SCENE 2: ALL-WHITE 4-PANEL QUADRANT GRID (25% OF SCREEN EACH)
+       PRIMARY 4-PANEL QUADRANT GRID (25% OF SCREEN EACH)
        ========================================================================== */
     .quadrant-grid {
       position: fixed;
@@ -89,26 +46,22 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      z-index: 10;
       background-color: #ffffff;
       font-family: var(--font-panel);
       transform-origin: center center;
-      transform: scale(0.94);
       will-change: transform, opacity;
       transition: transform 0.38s var(--snap-curve), opacity 0.35s ease;
+      z-index: 10;
     }
 
-    body.is-zoomed .quadrant-grid {
-      transform: scale(1);
-    }
-
-    body.is-hub-active .quadrant-grid {
+    /* Zoom into About Page */
+    body.is-about-active .quadrant-grid {
       transform: scale(2.2);
       opacity: 0;
       pointer-events: none;
     }
 
-    /* INDIVIDUAL PANELS */
+    /* INDIVIDUAL PANELS (CLEAN ALL-WHITE, NO COLOR SHIFTS) */
     .panel {
       position: relative;
       overflow: hidden;
@@ -122,6 +75,7 @@
       cursor: pointer;
     }
 
+    /* Hairline Quadrant Borders */
     .panel-stardebloater {
       border-right: 1px solid var(--border-light);
       border-bottom: 1px solid var(--border-light);
@@ -136,6 +90,7 @@
       border: none;
     }
 
+    /* PANEL CONTENT STYLING */
     .panel-header {
       display: flex;
       align-items: center;
@@ -178,21 +133,8 @@
     .panel-footer {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #f4f4f5;
-      padding-top: 14px;
-    }
-
-    .panel-url {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #a1a1aa;
-      transition: color 0.2s;
-    }
-
-    .panel:hover .panel-url {
-      color: var(--text-main);
+      justify-content: flex-end;
+      padding-top: 10px;
     }
 
     .panel-arrow {
@@ -222,7 +164,7 @@
     }
 
     /* ==========================================================================
-       CENTER CROSSROADS TRIGGER BUTTON
+       CENTER CROSSROADS TRIGGER BUTTON (ZOOMS INTO ABOUT PAGE)
        ========================================================================== */
     .crossroads-hub {
       position: absolute;
@@ -230,17 +172,10 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 30;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease 0.08s, transform 0.38s var(--snap-curve);
+      transition: opacity 0.25s ease, transform 0.38s var(--snap-curve);
     }
 
-    body.is-zoomed .crossroads-hub {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.is-hub-active .crossroads-hub {
+    body.is-about-active .crossroads-hub {
       transform: translate(-50%, -50%) scale(2.5);
       opacity: 0;
       pointer-events: none;
@@ -280,9 +215,9 @@
     }
 
     /* ==========================================================================
-       SCENE 3: ABOUT US / INFORMATION PAGE
+       ABOUT US / INFORMATION PAGE (ZOOMED IN)
        ========================================================================== */
-    .hub-page {
+    .about-page {
       position: fixed;
       inset: 0;
       width: 100vw;
@@ -302,13 +237,13 @@
       user-select: text;
     }
 
-    body.is-hub-active .hub-page {
+    body.is-about-active .about-page {
       opacity: 1;
       pointer-events: auto;
       transform: scale(1);
     }
 
-    .hub-inner {
+    .about-inner {
       max-width: 680px;
       width: 100%;
       padding: 40px 24px;
@@ -316,7 +251,6 @@
       flex-direction: column;
     }
 
-    /* Hero Header */
     .about-hero {
       margin-bottom: 28px;
     }
@@ -338,7 +272,6 @@
       line-height: 1.6;
     }
 
-    /* Narrative Paragraphs */
     .about-narrative {
       font-family: var(--font-panel);
       font-size: 1.05rem;
@@ -374,10 +307,10 @@
         bottom: 20px;
         transform: translateX(-50%);
       }
-      .hub-page {
+      .about-page {
         align-items: flex-start;
       }
-      .hub-inner {
+      .about-inner {
         padding: 60px 24px;
       }
     }
@@ -385,13 +318,8 @@
 </head>
 <body>
 
-  <!-- ==================== SCENE 1: HERO SCREEN (ALL WHITE) ==================== -->
-  <div id="hero-overlay" class="hero-overlay">
-    <h1 id="hero-title" class="hero-title">promotezz.cc</h1>
-  </div>
-
-  <!-- ==================== SCENE 2: 4-PANEL QUADRANT (25% EACH) ==================== -->
-  <div id="quadrant-grid" class="quadrant-grid">
+  <!-- ==================== 4-PANEL QUADRANT (PRIMARY SCREEN, 25% EACH) ==================== -->
+  <main id="quadrant-grid" class="quadrant-grid">
 
     <!-- PANEL 1: STARDEBLOATER (Top Left) -->
     <a href="https://stardebloater.promotezz.cc/" target="_blank" rel="noopener" class="panel panel-stardebloater">
@@ -403,7 +331,6 @@
         <p class="panel-desc">Imperial Windows 10 &amp; 11 decluttering engine. Strips telemetry, bloatware, Edge, and optimizes latency.</p>
       </div>
       <div class="panel-footer">
-        <span class="panel-url">stardebloater.promotezz.cc</span>
         <div class="panel-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         </div>
@@ -420,7 +347,6 @@
         <p class="panel-desc">Direct sublink documentation, script repos, and technical knowledge base for Promotezz.</p>
       </div>
       <div class="panel-footer">
-        <span class="panel-url">wiki.promotezz.cc</span>
         <div class="panel-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         </div>
@@ -437,7 +363,6 @@
         <p class="panel-desc">High-speed packaging suite, bundle management, and web utility workspace.</p>
       </div>
       <div class="panel-footer">
-        <span class="panel-url">packed.promotezz.cc</span>
         <div class="panel-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         </div>
@@ -454,7 +379,6 @@
         <p class="panel-desc">Explore public repositories, open-source toolkits, and experimental builds by @promotezzz.</p>
       </div>
       <div class="panel-footer">
-        <span class="panel-url">github.com/promotezzz</span>
         <div class="panel-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         </div>
@@ -473,11 +397,11 @@
       </button>
     </div>
 
-  </div>
+  </main>
 
-  <!-- ==================== SCENE 3: ABOUT US / INFORMATION PAGE ==================== -->
-  <section id="hub-page" class="hub-page">
-    <div class="hub-inner">
+  <!-- ==================== ABOUT US PAGE (ACCESSIBLE VIA CENTER BUTTON) ==================== -->
+  <section id="about-page" class="about-page">
+    <div class="about-inner">
 
       <!-- About Header -->
       <div class="about-hero">
@@ -501,42 +425,31 @@
   </section>
 
   <script>
-    const heroTitle = document.getElementById('hero-title');
     const hubTriggerBtn = document.getElementById('hub-trigger-btn');
+    const aboutPage = document.getElementById('about-page');
 
-    // 1. Zoom from Hero into 4-Quadrant Grid
-    function zoomToQuadrants() {
-      document.body.classList.add('is-zoomed');
-    }
-
-    // 2. Zoom from 4-Quadrant Grid into the About Us page (Scene 3)
+    // Zoom into About Page
     function zoomToAbout() {
-      document.body.classList.add('is-hub-active');
+      document.body.classList.add('is-about-active');
     }
 
-    // Return back from About page to 4-Quadrant Grid
+    // Return to 4 Quadrants
     function returnToQuadrants() {
-      document.body.classList.remove('is-hub-active');
+      document.body.classList.remove('is-about-active');
     }
 
-    // Return back from 4-Quadrant Grid to initial Hero
-    function returnToHero() {
-      document.body.classList.remove('is-zoomed', 'is-hub-active');
-    }
-
-    heroTitle.addEventListener('click', zoomToQuadrants);
     hubTriggerBtn.addEventListener('click', zoomToAbout);
 
-    // ESC key hierarchy:
-    // If on About Page -> press Esc to return to Quadrants
-    // If on Quadrants -> press Esc to return to Hero
+    // Clicking outside about content or pressing ESC returns to quadrants
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (document.body.classList.contains('is-hub-active')) {
-          returnToQuadrants();
-        } else if (document.body.classList.contains('is-zoomed')) {
-          returnToHero();
-        }
+      if (e.key === 'Escape' && document.body.classList.contains('is-about-active')) {
+        returnToQuadrants();
+      }
+    });
+
+    aboutPage.addEventListener('click', (e) => {
+      if (e.target === aboutPage) {
+        returnToQuadrants();
       }
     });
   </script>
