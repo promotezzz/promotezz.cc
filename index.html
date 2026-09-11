@@ -22,7 +22,7 @@
       --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-panel: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', Consolas, monospace;
-      --snap-curve: cubic-bezier(0.16, 1, 0.3, 1);
+      --spring-ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     html, body {
@@ -49,19 +49,25 @@
       background-color: #ffffff;
       font-family: var(--font-panel);
       transform-origin: center center;
-      will-change: transform, opacity;
-      transition: transform 0.38s var(--snap-curve), opacity 0.35s ease;
+      transform: scale(1);
+      opacity: 1;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+      transition: transform 0.52s var(--spring-ease), 
+                  opacity 0.42s ease, 
+                  filter 0.42s ease;
       z-index: 10;
     }
 
-    /* Zoom into About Page */
+    /* Cinematic Parting Zoom when opening About */
     body.is-about-active .quadrant-grid {
-      transform: scale(2.2);
+      transform: scale(1.12);
       opacity: 0;
+      filter: blur(6px);
       pointer-events: none;
     }
 
-    /* INDIVIDUAL PANELS (CLEAN ALL-WHITE, NO COLOR SHIFTS) */
+    /* INDIVIDUAL PANELS */
     .panel {
       position: relative;
       overflow: hidden;
@@ -116,11 +122,11 @@
       letter-spacing: -0.03em;
       margin-bottom: 8px;
       color: var(--text-main);
-      transition: transform 0.2s ease;
+      transition: transform 0.25s var(--spring-ease);
     }
 
     .panel:hover .panel-title {
-      transform: translateX(2px);
+      transform: translateX(4px);
     }
 
     .panel-desc {
@@ -138,8 +144,8 @@
     }
 
     .panel-arrow {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #f4f4f5;
       color: #18181b;
@@ -147,14 +153,14 @@
       align-items: center;
       justify-content: center;
       border: 1px solid #e4e4e7;
-      transition: all 0.25s var(--snap-curve);
+      transition: all 0.25s var(--spring-ease);
     }
 
     .panel:hover .panel-arrow {
       background: #09090b;
       color: #ffffff;
       border-color: #09090b;
-      transform: translateX(3px) translateY(-3px);
+      transform: translateX(4px) translateY(-4px);
     }
 
     .panel-arrow svg {
@@ -164,19 +170,20 @@
     }
 
     /* ==========================================================================
-       CENTER CROSSROADS TRIGGER BUTTON (ZOOMS INTO ABOUT PAGE)
+       CENTER CROSSROADS TRIGGER BUTTON
        ========================================================================== */
     .crossroads-hub {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(1);
       z-index: 30;
-      transition: opacity 0.25s ease, transform 0.38s var(--snap-curve);
+      will-change: transform, opacity;
+      transition: opacity 0.35s ease, transform 0.48s var(--spring-ease);
     }
 
     body.is-about-active .crossroads-hub {
-      transform: translate(-50%, -50%) scale(2.5);
+      transform: translate(-50%, -50%) scale(1.8);
       opacity: 0;
       pointer-events: none;
     }
@@ -186,26 +193,26 @@
       color: #09090b;
       border: 1px solid #d4d4d8;
       border-radius: 999px;
-      padding: 10px 22px;
+      padding: 11px 24px;
       font-family: var(--font-mono);
       font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
-      transition: all 0.2s var(--snap-curve);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.06);
+      transition: transform 0.25s var(--spring-ease), 
+                  box-shadow 0.25s ease, 
+                  border-color 0.25s ease;
       outline: none;
     }
 
     .hub-trigger-btn:hover {
-      background: #09090b;
-      color: #ffffff;
+      transform: scale(1.08);
       border-color: #09090b;
-      transform: scale(1.06);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
     }
 
     .hub-trigger-btn svg {
@@ -215,7 +222,7 @@
     }
 
     /* ==========================================================================
-       ABOUT US / INFORMATION PAGE (ZOOMED IN)
+       ABOUT US / INFORMATION PAGE (GLIDE & BLOOM TRANSITION)
        ========================================================================== */
     .about-page {
       position: fixed;
@@ -226,10 +233,10 @@
       z-index: 40;
       opacity: 0;
       pointer-events: none;
-      transform: scale(0.92);
+      transform: scale(0.93);
       transform-origin: center center;
       will-change: transform, opacity;
-      transition: transform 0.38s var(--snap-curve), opacity 0.32s ease;
+      transition: transform 0.5s var(--spring-ease), opacity 0.38s ease;
       overflow-y: auto;
       display: flex;
       align-items: center;
@@ -246,9 +253,33 @@
     .about-inner {
       max-width: 680px;
       width: 100%;
-      padding: 40px 24px;
+      padding: 48px 24px;
       display: flex;
       flex-direction: column;
+    }
+
+    /* Staggered Entrance Animations for High-Polish Feel */
+    body.is-about-active .about-hero {
+      animation: smoothFloatIn 0.55s var(--spring-ease) 0.08s both;
+    }
+
+    body.is-about-active .about-narrative {
+      animation: smoothFloatIn 0.55s var(--spring-ease) 0.16s both;
+    }
+
+    body.is-about-active .about-close-bar {
+      animation: smoothFloatIn 0.55s var(--spring-ease) 0.24s both;
+    }
+
+    @keyframes smoothFloatIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .about-hero {
@@ -280,6 +311,56 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    /* Sleek Bottom Return Bar */
+    .about-close-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .about-return-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      padding: 9px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s var(--spring-ease);
+      user-select: none;
+    }
+
+    .about-return-btn:hover {
+      background: #09090b;
+      color: #ffffff;
+      border-color: #09090b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .esc-tag {
+      background: #f4f4f5;
+      color: #71717a;
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e4e4e7;
+      transition: all 0.2s;
+    }
+
+    .about-return-btn:hover .esc-tag {
+      background: #27272a;
+      color: #a1a1aa;
+      border-color: #3f3f46;
     }
 
     /* MOBILE RESPONSIVE */
@@ -306,6 +387,9 @@
         top: auto;
         bottom: 20px;
         transform: translateX(-50%);
+      }
+      body.is-about-active .crossroads-hub {
+        transform: translateX(-50%) scale(1.8);
       }
       .about-page {
         align-items: flex-start;
@@ -421,12 +505,21 @@
         </p>
       </div>
 
+      <!-- Bottom Return Bar -->
+      <div class="about-close-bar">
+        <button id="close-about-btn" class="about-return-btn">
+          <span>&larr;</span> Back to Overview
+          <span class="esc-tag">ESC</span>
+        </button>
+      </div>
+
     </div>
   </section>
 
   <script>
     const hubTriggerBtn = document.getElementById('hub-trigger-btn');
     const aboutPage = document.getElementById('about-page');
+    const closeAboutBtn = document.getElementById('close-about-btn');
 
     // Zoom into About Page
     function zoomToAbout() {
@@ -439,6 +532,9 @@
     }
 
     hubTriggerBtn.addEventListener('click', zoomToAbout);
+    if (closeAboutBtn) {
+      closeAboutBtn.addEventListener('click', returnToQuadrants);
+    }
 
     // Clicking outside about content or pressing ESC returns to quadrants
     window.addEventListener('keydown', (e) => {
