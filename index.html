@@ -53,48 +53,43 @@
       transition: transform 0.52s var(--spring-ease), opacity 0.38s ease;
     }
 
-    /* Top Corner Bar */
-    .hero-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      transition: opacity 0.3s ease, transform 0.35s var(--spring-ease);
-    }
-
-    .hero-corner-left {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
+    /* Top-Center Text-Only Toast */
+    .hero-toast {
+      position: fixed;
+      top: clamp(24px, 4vw, 36px);
+      left: 50%;
+      transform: translateX(-50%);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       color: var(--text-muted);
-      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 25;
+      opacity: 0;
+      animation: toastFade 3.2s var(--spring-ease) forwards;
+      will-change: opacity, transform;
+      user-select: none;
     }
 
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-      animation: pulseGlow 2s infinite ease-in-out;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(0.85); opacity: 0.6; }
-      50% { transform: scale(1.25); opacity: 1; }
-    }
-
-    .hero-corner-right {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--text-faint);
-      text-transform: uppercase;
+    @keyframes toastFade {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -6px);
+      }
+      12% {
+        opacity: 0.85;
+        transform: translate(-50%, 0);
+      }
+      80% {
+        opacity: 0.85;
+        transform: translate(-50%, 0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -4px);
+        visibility: hidden;
+      }
     }
 
     /* Center Hero Unit */
@@ -118,79 +113,20 @@
       transform-origin: center center;
       transition: transform 0.3s var(--spring-ease), opacity 0.25s ease;
       line-height: 1;
-      margin-bottom: 14px;
+      margin-bottom: 0;
     }
 
     .hero-center-unit:hover .hero-title {
       transform: scale(1.03);
     }
 
-    .hero-subtitle {
-      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
-      color: var(--text-muted);
-      font-weight: 500;
-      margin-bottom: 24px;
-      max-width: 520px;
-      line-height: 1.5;
-    }
-
-    .hero-enter-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #ffffff;
-      border: 1px solid var(--border-light);
-      border-radius: 999px;
-      padding: 9px 20px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-main);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      transition: all 0.25s var(--spring-ease);
-    }
-
-    .hero-center-unit:hover .hero-enter-pill {
-      background: #09090b;
-      color: #ffffff;
-      border-color: #09090b;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    .hero-enter-pill .kbd-hint {
-      background: #f4f4f5;
-      color: #71717a;
-      font-size: 0.72rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #e4e4e7;
-      transition: all 0.2s;
-    }
-
-    .hero-center-unit:hover .kbd-hint {
-      background: #27272a;
-      color: #ffffff;
-      border-color: #3f3f46;
-    }
-
     /* Bottom Bar */
     .hero-bottombar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       width: 100%;
       transition: opacity 0.3s ease, transform 0.35s var(--spring-ease);
-    }
-
-    .hero-spec {
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--text-faint);
     }
 
     .hero-ext-link {
@@ -218,9 +154,9 @@
       opacity: 0;
     }
 
-    body.is-zoomed .hero-topbar {
-      opacity: 0;
-      transform: translateY(-16px);
+    body.is-zoomed .hero-toast {
+      opacity: 0 !important;
+      transition: opacity 0.2s ease;
     }
 
     body.is-zoomed .hero-bottombar {
@@ -616,30 +552,16 @@
   <!-- ==================== SCENE 1: ELEVATED MINIMAL HOME PAGE ==================== -->
   <div id="hero-overlay" class="hero-overlay">
     
-    <!-- Top Corner Bar -->
-    <header class="hero-topbar">
-      <div class="hero-corner-left">
-        <span class="pulse-dot"></span>
-        <span>Ecosystem // Online</span>
-      </div>
-      <div class="hero-corner-right">
-        <span>3 Nodes Live</span>
-      </div>
-    </header>
+    <!-- Top-Center Text-Only Toast (appears for ~3 seconds) -->
+    <div id="hero-toast" class="hero-toast">click to enter</div>
 
     <!-- Center Hero Unit -->
     <div class="hero-center-unit" id="hero-trigger">
       <h1 id="hero-title" class="hero-title">promotezz.cc</h1>
-      <p class="hero-subtitle">Independent software collective, Windows decluttering &amp; mod organization</p>
-      <div class="hero-enter-pill">
-        <span>Click to enter</span>
-        <span class="kbd-hint">&crarr;</span>
-      </div>
     </div>
 
     <!-- Bottom Bar -->
     <footer class="hero-bottombar">
-      <span class="hero-spec">STARDEBLOATER &bull; WIKI &bull; PACKED</span>
       <a href="https://github.com/promotezzz" target="_blank" rel="noopener" class="hero-ext-link">github.com/promotezzz &rarr;</a>
     </footer>
 
@@ -760,6 +682,7 @@
   </section>
 
   <script>
+    const heroOverlay = document.getElementById('hero-overlay');
     const heroTrigger = document.getElementById('hero-trigger');
     const hubTriggerBtn = document.getElementById('hub-trigger-btn');
     const aboutPage = document.getElementById('about-page');
@@ -785,7 +708,15 @@
       document.body.classList.remove('is-zoomed', 'is-about-active');
     }
 
-    heroTrigger.addEventListener('click', zoomToQuadrants);
+    if (heroTrigger) {
+      heroTrigger.addEventListener('click', zoomToQuadrants);
+    }
+    if (heroOverlay) {
+      heroOverlay.addEventListener('click', (e) => {
+        if (e.target.closest('.hero-ext-link')) return;
+        zoomToQuadrants();
+      });
+    }
     hubTriggerBtn.addEventListener('click', zoomToAbout);
     if (closeAboutBtn) {
       closeAboutBtn.addEventListener('click', returnToQuadrants);
