@@ -30,7 +30,7 @@
     }
 
     /* ==========================================================================
-       HAMBURGER BUTTON (PURE MINIMALIST, ALL WHITE, NO BOX)
+       HAMBURGER BUTTON (SPRING MORPH & HOVER ANIMATION)
        ========================================================================== */
     .menu-btn {
       position: fixed;
@@ -50,6 +50,12 @@
       gap: 6px;
       padding: 0;
       touch-action: manipulation;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Tactile press response on touch / click */
+    .menu-btn:active {
+      transform: scale(0.88);
     }
 
     .menu-btn .bar {
@@ -57,15 +63,38 @@
       height: 2px;
       background-color: #ffffff;
       border-radius: 2px;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                  opacity 0.2s ease,
-                  background-color 0.25s ease;
+      transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.25s ease,
+                  width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.3s ease;
       transform-origin: center;
     }
 
-    /* Morph into "X" and turn black against the all-white overlay */
+    /* Subtle hover rhythm when closed */
+    .menu-btn:not(.is-active):hover .bar:nth-child(1) {
+      width: 26px;
+      transform: translateY(-1px);
+    }
+    .menu-btn:not(.is-active):hover .bar:nth-child(2) {
+      width: 16px;
+    }
+    .menu-btn:not(.is-active):hover .bar:nth-child(3) {
+      width: 26px;
+      transform: translateY(1px);
+    }
+
+    /* 180° Spin + Spring X Morph */
+    .menu-btn.is-active {
+      transform: rotate(180deg);
+    }
+
+    .menu-btn.is-active:active {
+      transform: rotate(180deg) scale(0.88);
+    }
+
     .menu-btn.is-active .bar {
       background-color: #000000;
+      width: 24px !important;
     }
 
     .menu-btn.is-active .bar:nth-child(1) {
@@ -82,7 +111,7 @@
     }
 
     /* ==========================================================================
-       ALL-WHITE MENU (PURE WHITE, NOTHING ADDED)
+       ALL-WHITE MENU (PURE WHITE, STAGGERED REVEAL)
        ========================================================================== */
     .menu-overlay {
       position: fixed;
@@ -121,13 +150,34 @@
       color: #000000;
       text-decoration: none;
       line-height: 1;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Staggered entrance for menu links */
+    .menu-overlay.is-open .menu-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-overlay.is-open .menu-link:nth-child(1) { transition-delay: 0.05s; }
+    .menu-overlay.is-open .menu-link:nth-child(2) { transition-delay: 0.10s; }
+    .menu-overlay.is-open .menu-link:nth-child(3) { transition-delay: 0.15s; }
+    .menu-overlay.is-open .menu-link:nth-child(4) { transition-delay: 0.20s; }
+    .menu-overlay.is-open .menu-link:nth-child(5) { transition-delay: 0.25s; }
+
+    /* Instant reset on close */
+    .menu-overlay:not(.is-open) .menu-link {
+      transition-delay: 0s;
+      opacity: 0;
+      transform: translateY(16px);
     }
 
     .menu-link:hover,
     .menu-link:active {
       opacity: 0.45;
-      transform: scale(1.04);
+      transform: translateY(-2px) scale(1.03);
     }
   </style>
 </head>
