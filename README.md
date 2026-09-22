@@ -11,6 +11,7 @@ The official central landing portal and umbrella directory for the Promotezz sof
 * **[STARDEBLOATER](https://stardebloater.promotezz.cc/)** — Imperial Windows 10 & 11 Decluttering Engine. Strips background telemetry, bloatware, Edge, and optimizes OS latency.
 * **[Promotezz Wiki](https://wiki.promotezz.cc/)** — Direct sublink documentation, script repository, and technical knowledge base.
 * **[Packed](https://packed.promotezz.cc/)** — Official hub for curated Modrinth modpacks, custom mods, and game performance organization.
+* **[LOL](https://lol.promotezz.cc/)** — Personal bio website, verified profiles, social links, and Discord presence.
 * **[GitHub & Labs](https://github.com/promotezzz)** — Open-source repositories and experimental builds.
 
 ## Features
